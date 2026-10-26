@@ -1,39 +1,56 @@
-"""Extend your phone bill lab with premium membership and tiered pricing."""
-
+def check_premium(answer):
+    if (answer.strip().lower().startswith('y')):
+        return True
+    elif (answer.strip().lower().startswith('n')):
+        return False
 
 def exceeds_data_limit(data_used):
-    """Return True when data_used exceeds 10 GB; otherwise return False.
+    if (data_used > 10):
+        return True
+    else:
+        return False
 
-    Reuse your lab's Boolean-returning function here.
-    """
-    pass
+    
 
 
 def get_overage_rate(data_used, has_premium):
-    """Return the numeric rate for every overage GB.
-
-    data_used is total usage in GB; has_premium is a Boolean.
-
-    Total data used           Regular    Premium
-    10 GB or less                0          0
-    More than 10, up to 20       2          1
-    More than 20                3          2
-
-    Use if-elif-else for tiers and a nested decision for membership.
-    Return the rate rather than printing it.
-    """
-    pass
+    if (data_used <= 10):
+        return 0
+    elif (data_used <= 20):
+        if (has_premium):
+            return 1
+        else:
+            return 2
+    else:
+        if (has_premium):
+            return 2
+        else:
+            return 1
 
 
 def main():
-    """Keep your lab's inputs, calculations, and messages together here.
-
-    Add the premium input and convert it to a Boolean.
-    Call exceeds_data_limit() in a decision.
-    Use get_overage_rate() instead of the fixed $2 rate.
-    Add the premium recommendation described in the README.
-    """
-    pass
+    GB = float(input("Enter GB used: "))
+    baseCost = round(float(input("Enter base cost: ")), 2)
+    premium = check_premium(input("Are you a premium user (Y/N)? "))
+    over = exceeds_data_limit(GB)
+    bill = baseCost
+    if (exceeds_data_limit(GB)):
+        overAmnt = GB-10
+        print(f"you are {overAmnt} GB over your limit")
+        extraCharge = round(overAmnt*get_overage_rate(GB, premium), 2)
+        bill += extraCharge
+        if (overAmnt>5):
+            usage = 'high'
+        else:
+            usage = 'moderate'
+            print(f"{usage} extra usage.")
+    else:
+        print("You are within your limit")
+    print(f"your bill is ${bill}")   
+    if (premium):
+        print("Thank you for being a premium member!")
+    else:
+        print("Consider upgrading to premium for lower overage rates.")
 
 
 # Keep this guard: importing functions for tests must not prompt for input.
