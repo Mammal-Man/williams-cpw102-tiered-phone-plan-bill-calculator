@@ -10,22 +10,15 @@ def exceeds_data_limit(data_used):
     else:
         return False
 
-    
-
-
 def get_overage_rate(data_used, has_premium):
     if (data_used <= 10):
         return 0
-    elif (data_used <= 20):
-        if (has_premium):
-            return 1
-        else:
-            return 2
+    elif (data_used <= 20 and has_premium):
+        return 1
+    elif ((data_used <= 20 and not has_premium) or (data_used > 20 and has_premium)):
+        return 2
     else:
-        if (has_premium):
-            return 2
-        else:
-            return 3
+        return 3
 
 
 def main():
