@@ -25,32 +25,27 @@ def get_overage_rate(data_used, has_premium):
         if (has_premium):
             return 2
         else:
-            return 1
+            return 3
 
 
 def main():
-    GB = float(input("Enter GB used: "))
-    baseCost = round(float(input("Enter base cost: ")), 2)
-    premium = check_premium(input("Are you a premium user (Y/N)? "))
+    GB = float(input("Enter data used (GB): "))
+    baseCost = round(float(input("Enter base monthly plan cost: ")), 2)
+    premium = check_premium(input("Do you have a premium plan? (yes or no): "))
     over = exceeds_data_limit(GB)
+    overageRate = get_overage_rate(GB, premium)
     bill = baseCost
     if (exceeds_data_limit(GB)):
         overAmnt = GB-10
-        print(f"you are {overAmnt} GB over your limit")
-        extraCharge = round(overAmnt*get_overage_rate(GB, premium), 2)
+        extraCharge = round(overAmnt*overageRate, 2)
         bill += extraCharge
-        if (overAmnt>5):
-            usage = 'high'
-        else:
-            usage = 'moderate'
-            print(f"{usage} extra usage.")
+        print(f"\nYou are {overAmnt} GB over your limit")
+        print(f"Overage Rate: ${overageRate} per GB")
     else:
-        print("You are within your limit")
-    print(f"your bill is ${bill}")   
-    if (premium):
-        print("Thank you for being a premium member!")
-    else:
-        print("Consider upgrading to premium for lower overage rates.")
+        extraCharge = 0
+        print("\nYou are within your data limit.\nGB over limit: 0")
+    print(f"Overage Cost: ${extraCharge:.2f}")
+    print(f"Total bill: ${bill:.2f}")
 
 
 # Keep this guard: importing functions for tests must not prompt for input.
